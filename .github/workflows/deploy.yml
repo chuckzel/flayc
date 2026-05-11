@@ -33,7 +33,7 @@ jobs:
       - name: Build site
         run: npm run build
         env:
-          BASE: /${{ github.ref_name }}/
+          BASE: /${{ github.event.repository.name }}/${{ github.ref_name }}/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
