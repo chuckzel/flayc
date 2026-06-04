@@ -36,4 +36,35 @@
   select {
     font: inherit;
   }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  @media print {
+    :root {
+      color: #0f172a;
+      background: #ffffff;
+    }
+
+    body {
+      background: #ffffff;
+      color: #0f172a;
+    }
+
+    .no-print {
+      display: none !important;
+    }
+
+    .print-preview {
+      border: 0 !important;
+      box-shadow: none !important;
+      background: #ffffff !important;
+    }
+  }
 }
