@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BlocklyWorkspace } from "./components/BlocklyWorkspace";
 import { PhotoManager } from "./components/PhotoManager";
 import { PrintPreview } from "./components/PrintPreview";
+import { StudioHeader } from "./components/StudioHeader";
 import { WorkspaceYamlPanel } from "./components/WorkspaceYamlPanel";
 import {
   DEFAULT_LAYOUT,
@@ -83,23 +84,10 @@ function App() {
   return (
     <main className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.16),_transparent_32%),linear-gradient(180deg,_#020617_0%,_#0f172a_100%)] px-4 py-4 text-slate-100 print:bg-white print:px-0 print:py-0 print:text-black sm:px-6 lg:px-8">
       <section className="mx-auto flex min-h-[calc(100vh-2rem)] max-w-[1800px] flex-col gap-4 print:min-h-0 print:max-w-none print:gap-0">
-        <header className="no-print flex flex-col gap-4 rounded-3xl border border-white/10 bg-slate-950/70 px-5 py-4 shadow-2xl shadow-black/25 backdrop-blur-lg sm:flex-row sm:items-center sm:justify-between">
-          <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan-200">
-              Photo print layout studio
-            </div>
-            <div>
-              <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-                Arrange photos, shape the page, and print directly from the
-                browser.
-              </h1>
-              <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-300">
-                Upload images on the left, wire the layout logic in Blockly at
-                the center, and review the printable page on the right.
-              </p>
-            </div>
-          </div>
-        </header>
+        <StudioHeader
+          title="Arrange photos, shape the page, and print directly from the browser."
+          description="Upload images on the left, wire the layout logic in Blockly at the center, and review the printable page on the right."
+        />
 
         <div className="grid flex-1 gap-4 xl:grid-cols-[360px_minmax(0,1.15fr)_minmax(340px,0.95fr)] print:grid-cols-1 print:gap-0">
           <PhotoManager
