@@ -24,7 +24,6 @@ function App() {
   const [workspaceState, setWorkspaceState] = useState<unknown>(null);
   const [blocklyReady, setBlocklyReady] = useState(false);
 
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const photosRef = useRef(photos);
 
   useEffect(() => {
@@ -74,10 +73,6 @@ function App() {
     };
   }, []);
 
-  const handlePrint = () => {
-    window.print();
-  };
-
   const snapshot = useMemo(
     () => buildSnapshot(layout, photos, workspaceState),
     [layout, photos, workspaceState],
@@ -104,23 +99,6 @@ function App() {
               </p>
             </div>
           </div>
-
-          <div className="flex flex-wrap items-center gap-3">
-            <button
-              type="button"
-              className="inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/8 px-4 py-2 text-sm font-medium text-slate-100 transition hover:border-cyan-300/40 hover:bg-cyan-300/10"
-              onClick={() => fileInputRef.current?.click()}
-            >
-              Upload pictures
-            </button>
-            <button
-              type="button"
-              className="inline-flex items-center justify-center rounded-xl bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
-              onClick={handlePrint}
-            >
-              Print page
-            </button>
-          </div>
         </header>
 
         <div className="grid flex-1 gap-4 xl:grid-cols-[360px_minmax(0,1.15fr)_minmax(340px,0.95fr)] print:grid-cols-1 print:gap-0">
@@ -129,7 +107,6 @@ function App() {
             onUpload={handleUpload}
             onRemove={removePhoto}
             palette={PALETTE}
-            uploadInputRef={fileInputRef}
           />
 
           <BlocklyWorkspace
@@ -138,7 +115,11 @@ function App() {
             setReady={setBlocklyReady}
           />
 
-          <PrintPreview layout={layout} photos={photos} />
+          <PrintPreview
+            layout={layout}
+            photos={photos}
+            onPrint={() => window.print()}
+          />
         </div>
 
         <WorkspaceYamlPanel workspaceYaml={workspaceYaml} />

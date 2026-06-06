@@ -1,4 +1,4 @@
-import type { ChangeEvent, RefObject } from "react";
+import type { ChangeEvent } from "react";
 import type { UploadedPhoto } from "../print-types";
 
 type PhotoManagerProps = {
@@ -6,7 +6,6 @@ type PhotoManagerProps = {
   onUpload: (files: File[]) => void;
   onRemove: (photoId: string) => void;
   palette: string[];
-  uploadInputRef: RefObject<HTMLInputElement | null>;
 };
 
 export function PhotoManager({
@@ -14,7 +13,6 @@ export function PhotoManager({
   onUpload,
   onRemove,
   palette,
-  uploadInputRef,
 }: PhotoManagerProps) {
   const handleUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(event.target.files ?? []);
@@ -51,7 +49,6 @@ export function PhotoManager({
             in this panel.
           </span>
           <input
-            ref={uploadInputRef}
             type="file"
             accept="image/*"
             multiple

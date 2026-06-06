@@ -3,9 +3,10 @@ import type { LayoutSettings, UploadedPhoto } from "../print-types";
 type PrintPreviewProps = {
   layout: LayoutSettings;
   photos: UploadedPhoto[];
+  onPrint: () => void;
 };
 
-export function PrintPreview({ layout, photos }: PrintPreviewProps) {
+export function PrintPreview({ layout, photos, onPrint }: PrintPreviewProps) {
   const marginStyles = {
     paddingTop: `${layout.topMarginMm}mm`,
     paddingRight: `${layout.rightMarginMm}mm`,
@@ -27,9 +28,18 @@ export function PrintPreview({ layout, photos }: PrintPreviewProps) {
             This is the browser-printable output area.
           </p>
         </div>
-        <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">
-          {layout.paperSize}
-        </span>
+        <div className="flex items-center gap-3">
+          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">
+            {layout.paperSize}
+          </span>
+          <button
+            type="button"
+            className="inline-flex items-center justify-center rounded-xl bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
+            onClick={onPrint}
+          >
+            Print page
+          </button>
+        </div>
       </div>
 
       <div className="bg-slate-200/50 p-4 print:bg-white print:p-0">

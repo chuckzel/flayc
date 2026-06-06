@@ -14,10 +14,10 @@ describe("App", () => {
       screen.getByRole("heading", {
         name: /arrange photos, shape the page, and print directly from the browser/i,
       }),
-    ).toBeInTheDocument();
+    ).toBeDefined();
     expect(
-      screen.getByRole("button", { name: /upload pictures/i }),
-    ).toBeInTheDocument();
+      screen.getByRole("heading", { name: /picture manager/i }),
+    ).toBeDefined();
 
     fireEvent.click(screen.getByRole("button", { name: /print page/i }));
 
@@ -31,6 +31,8 @@ describe("App", () => {
     expect(
       screen.getAllByRole("heading", { name: /intermediate yaml/i }),
     ).not.toHaveLength(0);
-    expect(screen.getAllByText(/generated from blockly/i)).not.toHaveLength(0);
+    expect(
+      screen.getAllByText(/generated from blockly/i).length,
+    ).toBeGreaterThan(0);
   });
 });
