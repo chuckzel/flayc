@@ -7,7 +7,7 @@ import { WorkspaceYamlPanel } from "./components/WorkspaceYamlPanel";
 import {
   DEFAULT_LAYOUT,
   PALETTE,
-  type LayoutSettings,
+  type DocumentTree,
   type UploadedPhoto,
 } from "./print-types";
 import {
@@ -21,7 +21,7 @@ function App() {
   const [photos, setPhotos] = useState<UploadedPhoto[]>(() =>
     createStarterPhotos(),
   );
-  const [layout, setLayout] = useState<LayoutSettings>(DEFAULT_LAYOUT);
+  const [documentTree, setDocumentTree] = useState<DocumentTree | null>(null);
   const [workspaceState, setWorkspaceState] = useState<unknown>(null);
   const [blocklyReady, setBlocklyReady] = useState(false);
 
@@ -57,8 +57,8 @@ function App() {
   }, []);
 
   const handleWorkspaceChange = useCallback(
-    (nextLayout: LayoutSettings, nextWorkspaceState: unknown) => {
-      setLayout(nextLayout);
+    (nextDocumentTree: DocumentTree, nextWorkspaceState: unknown) => {
+      setDocumentTree(nextDocumentTree);
       setWorkspaceState(nextWorkspaceState);
     },
     [],
@@ -75,8 +75,17 @@ function App() {
   }, []);
 
   const snapshot = useMemo(
-    () => buildSnapshot(layout, photos, workspaceState),
-    [layout, photos, workspaceState],
+    () =>
+      buildSnapshot(
+        documentTree ?? {
+          type: "page",
+          settings: DEFAULT_LAYOUT,
+          children: [],
+        },
+        photos,
+        workspaceState,
+      ),
+    [documentTree, photos, workspaceState],
   );
 
   const workspaceYaml = useMemo(() => toYaml(snapshot), [snapshot]);
@@ -98,13 +107,14 @@ function App() {
           />
 
           <BlocklyWorkspace
+            photos={photos}
             onChange={handleWorkspaceChange}
             ready={blocklyReady}
             setReady={setBlocklyReady}
           />
 
           <PrintPreview
-            layout={layout}
+            document={documentTree}
             photos={photos}
             onPrint={() => window.print()}
           />
