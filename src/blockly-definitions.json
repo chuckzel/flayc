@@ -1,0 +1,163 @@
+[
+  {
+    "type": "page",
+    "tooltip": "",
+    "helpUrl": "",
+    "message0": "Page of size %1 x %2 mm %3 %4",
+    "args0": [
+      {
+        "type": "field_number",
+        "name": "width",
+        "value": 210,
+        "min": 0.01
+      },
+      {
+        "type": "field_number",
+        "name": "height",
+        "value": 297,
+        "min": 0.01
+      },
+      {
+        "type": "input_dummy",
+        "name": "size"
+      },
+      {
+        "type": "input_statement",
+        "name": "children",
+        "check": ["Container", "Picture"]
+      }
+    ],
+    "colour": 120
+  },
+  {
+    "type": "container",
+    "tooltip": "",
+    "helpUrl": "",
+    "message0": "Container %1 styled %2 around %3",
+    "args0": [
+      {
+        "type": "input_end_row",
+        "name": ""
+      },
+      {
+        "type": "input_statement",
+        "name": "STYLES",
+        "check": "Style"
+      },
+      {
+        "type": "input_statement",
+        "name": "CHILDREN",
+        "check": ["Container", "Picture"]
+      }
+    ],
+    "previousStatement": ["Container", "Picture"],
+    "nextStatement": ["Container", "Picture"],
+    "colour": 225
+  },
+  {
+    "type": "container_img",
+    "tooltip": "",
+    "helpUrl": "",
+    "message0": "Image %1",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "NAME",
+        "check": "Picture"
+      }
+    ],
+    "previousStatement": "Container",
+    "nextStatement": "Container",
+    "colour": 225
+  },
+  {
+    "type": "picture_uploaded",
+    "tooltip": "",
+    "helpUrl": "",
+    "message0": "Picture %1 %2",
+    "args0": [
+      {
+        "type": "field_dropdown",
+        "name": "PICTURE",
+        "options": [["placeholder replaced by extension", "PLACEHOLDER"]]
+      },
+      {
+        "type": "input_dummy",
+        "name": ""
+      }
+    ],
+    "output": "Picture",
+    "colour": 15
+  },
+  {
+    "type": "style_custom",
+    "tooltip": "",
+    "helpUrl": "",
+    "message0": "Custom style ' %1 : %2 ' %3",
+    "args0": [
+      {
+        "type": "field_input",
+        "name": "PROPERTY",
+        "text": "property"
+      },
+      {
+        "type": "field_input",
+        "name": "VALUE",
+        "text": "value"
+      },
+      {
+        "type": "input_dummy",
+        "name": ""
+      }
+    ],
+    "previousStatement": "Style",
+    "nextStatement": "Style",
+    "colour": 285
+  },
+  {
+    "type": "style_border",
+    "tooltip": "",
+    "helpUrl": "",
+    "message0": "Border %1 %2 %3",
+    "args0": [
+      {
+        "type": "field_colour",
+        "name": "COLOR",
+        "colour": "#000000"
+      },
+      {
+        "type": "field_number",
+        "name": "WIDTH",
+        "value": 0,
+        "min": 0
+      },
+      {
+        "type": "input_dummy",
+        "name": ""
+      }
+    ],
+    "previousStatement": "Style",
+    "nextStatement": "Style",
+    "colour": 285
+  },
+  {
+    "type": "style_padding",
+    "tooltip": "",
+    "helpUrl": "",
+    "message0": "Padding %1 %2",
+    "args0": [
+      {
+        "type": "field_number",
+        "name": "NAME",
+        "value": 0
+      },
+      {
+        "type": "input_dummy",
+        "name": ""
+      }
+    ],
+    "previousStatement": "Style",
+    "nextStatement": "Style",
+    "colour": 285
+  }
+]

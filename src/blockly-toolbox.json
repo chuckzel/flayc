@@ -1,0 +1,45 @@
+{
+  "kind": "categoryToolbox",
+  "contents": [
+    {
+      "kind": "category",
+      "name": "Structure",
+      "contents": [
+        {
+          "kind": "block",
+          "type": "page"
+        },
+        {
+          "kind": "block",
+          "type": "container"
+        },
+        {
+          "kind": "block",
+          "type": "container_img"
+        },
+        {
+          "kind": "block",
+          "type": "picture_uploaded"
+        }
+      ]
+    },
+    {
+      "kind": "category",
+      "name": "Styles",
+      "contents": [
+        {
+          "kind": "block",
+          "type": "style_custom"
+        },
+        {
+          "kind": "block",
+          "type": "style_border"
+        },
+        {
+          "kind": "block",
+          "type": "style_padding"
+        }
+      ]
+    }
+  ]
+}

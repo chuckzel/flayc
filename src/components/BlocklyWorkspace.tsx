@@ -1,49 +1,15 @@
 import { useEffect, useRef } from "react";
 import * as Blockly from "blockly/core";
-import {
-  buildDocumentTree,
-  registerPrintBlocks,
-  setAvailablePhotoOptions,
-} from "../print-utils";
+import { buildDocumentTree, setAvailablePhotoOptions } from "../print-utils";
 import type { DocumentTree, UploadedPhoto } from "../print-types";
+import TOOLBOX from "../blockly-toolbox.json";
+import BLOCKDEFS from "../blockly-definitions.json";
 
 type BlocklyWorkspaceProps = {
   photos: UploadedPhoto[];
   onChange: (documentTree: DocumentTree, workspaceState: unknown) => void;
   ready: boolean;
   setReady: (ready: boolean) => void;
-};
-
-const TOOLBOX = {
-  kind: "flyoutToolbox",
-  contents: [
-    {
-      kind: "category",
-      name: "Page",
-      colour: "210",
-      contents: [{ kind: "block", type: "print_page" }],
-    },
-    {
-      kind: "category",
-      name: "Containers",
-      colour: "190",
-      contents: [
-        { kind: "block", type: "print_margins" },
-        { kind: "block", type: "print_border" },
-        { kind: "block", type: "print_size" },
-        { kind: "block", type: "print_flex" },
-      ],
-    },
-    {
-      kind: "category",
-      name: "Content",
-      colour: "28",
-      contents: [
-        { kind: "block", type: "print_picture" },
-        { kind: "block", type: "print_foreach" },
-      ],
-    },
-  ],
 };
 
 function connectStatement(
@@ -65,56 +31,10 @@ function createStarterWorkspace(
   workspace: Blockly.WorkspaceSvg,
   photos: UploadedPhoto[],
 ) {
-  const page = workspace.newBlock("print_page");
+  const page = workspace.newBlock("page");
   page.initSvg();
   page.render();
   page.moveBy(24, 24);
-
-  const margins = workspace.newBlock("print_margins");
-  margins.initSvg();
-  margins.render();
-  margins.moveBy(40, 96);
-  connectStatement(page, "CONTENT", margins);
-
-  const border = workspace.newBlock("print_border");
-  border.initSvg();
-  border.render();
-  border.moveBy(56, 168);
-  connectStatement(margins, "CONTENT", border);
-
-  const flex = workspace.newBlock("print_flex");
-  flex.initSvg();
-  flex.render();
-  flex.moveBy(72, 240);
-  connectStatement(border, "CONTENT", flex);
-
-  const picture = workspace.newBlock("print_picture");
-  picture.initSvg();
-  picture.render();
-  picture.moveBy(96, 312);
-  connectStatement(flex, "CONTENT", picture);
-
-  const foreach = workspace.newBlock("print_foreach");
-  foreach.initSvg();
-  foreach.render();
-  foreach.moveBy(96, 456);
-  connectStatement(flex, "CONTENT", foreach);
-
-  const size = workspace.newBlock("print_size");
-  size.initSvg();
-  size.render();
-  size.moveBy(112, 528);
-  connectStatement(foreach, "CONTENT", size);
-
-  const loopPicture = workspace.newBlock("print_picture");
-  loopPicture.initSvg();
-  loopPicture.render();
-  loopPicture.moveBy(128, 600);
-  connectStatement(size, "CONTENT", loopPicture);
-
-  const firstPhotoId = photos[0]?.id ?? "__current__";
-  picture.setFieldValue(firstPhotoId, "PHOTO_ID");
-  loopPicture.setFieldValue("__current__", "PHOTO_ID");
 }
 
 function syncPictureOptions(
@@ -136,6 +56,10 @@ function syncPictureOptions(
     });
 }
 
+function registerBlocks() {
+  Blockly.common.defineBlocksWithJsonArray(BLOCKDEFS);
+}
+
 export function BlocklyWorkspace({
   photos,
   onChange,
@@ -146,7 +70,7 @@ export function BlocklyWorkspace({
   const workspaceRef = useRef<Blockly.WorkspaceSvg | null>(null);
 
   useEffect(() => {
-    registerPrintBlocks();
+    registerBlocks();
 
     const container = blocklyContainerRef.current;
 
