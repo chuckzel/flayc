@@ -20,6 +20,9 @@ function createStarterWorkspace(workspace: Blockly.WorkspaceSvg) {
 }
 
 function registerBlocks() {
+  if (BLOCKDEFS.length > 0 && Blockly.Blocks[BLOCKDEFS[0].type]) {
+    return;
+  }
   Blockly.common.defineBlocksWithJsonArray(BLOCKDEFS);
 }
 
@@ -34,7 +37,9 @@ export function BlocklyWorkspace({
 
   useEffect(() => {
     registerBlocks();
+  }, []);
 
+  useEffect(() => {
     const container = blocklyContainerRef.current;
 
     if (!container) {
