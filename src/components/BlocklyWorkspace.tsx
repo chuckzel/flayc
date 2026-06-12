@@ -35,6 +35,34 @@ function registerBlocks(photosRef: React.RefObject<UploadedPhoto[]>) {
   Blockly.common.defineBlocksWithJsonArray(BLOCKDEFS);
 }
 
+function createWorkspace(container: HTMLDivElement) {
+  const workspace = Blockly.inject(container, {
+    toolbox: TOOLBOX,
+    grid: {
+      spacing: 24,
+      length: 3,
+      colour: "#334155",
+      snap: true,
+    },
+    zoom: {
+      controls: true,
+      wheel: true,
+      startScale: 0.95,
+      maxScale: 1.5,
+      minScale: 0.6,
+      scaleSpeed: 1.1,
+    },
+    trashcan: true,
+    move: {
+      scrollbars: true,
+      drag: true,
+      wheel: true,
+    },
+  });
+
+  return workspace;
+}
+
 export function BlocklyWorkspace({
   photos,
   onChange,
@@ -47,6 +75,20 @@ export function BlocklyWorkspace({
 
   useEffect(() => {
     registerBlocks(photosRef);
+
+    const container = blocklyContainerRef.current;
+
+    if (!container) {
+      throw new Error("Blockly container not found");
+    }
+    const workspace = createWorkspace(container);
+    workspaceRef.current = workspace;
+    createStarterWorkspace(workspace);
+
+    return () => {
+      workspace.dispose();
+      workspaceRef.current = null;
+    };
   }, []);
 
   useEffect(() => {
@@ -54,38 +96,10 @@ export function BlocklyWorkspace({
   }, [photos]);
 
   useEffect(() => {
-    const container = blocklyContainerRef.current;
-
-    if (!container) {
+    const workspace = workspaceRef.current;
+    if (!workspace) {
       return;
     }
-
-    const workspace = Blockly.inject(container, {
-      toolbox: TOOLBOX,
-      grid: {
-        spacing: 24,
-        length: 3,
-        colour: "#334155",
-        snap: true,
-      },
-      zoom: {
-        controls: true,
-        wheel: true,
-        startScale: 0.95,
-        maxScale: 1.5,
-        minScale: 0.6,
-        scaleSpeed: 1.1,
-      },
-      trashcan: true,
-      move: {
-        scrollbars: true,
-        drag: true,
-        wheel: true,
-      },
-    });
-
-    workspaceRef.current = workspace;
-
     const handleWorkspaceChange = () => {
       const documentTree = buildDocumentTree(workspace, photos);
       onChange(documentTree, Blockly.serialization.workspaces.save(workspace));
@@ -93,13 +107,9 @@ export function BlocklyWorkspace({
     };
 
     workspace.addChangeListener(handleWorkspaceChange);
-    createStarterWorkspace(workspace);
-    handleWorkspaceChange();
 
     return () => {
       workspace.removeChangeListener(handleWorkspaceChange);
-      workspace.dispose();
-      workspaceRef.current = null;
       setReady(false);
     };
   }, [onChange, photos, setReady]);
