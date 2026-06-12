@@ -19,10 +19,19 @@ function createStarterWorkspace(workspace: Blockly.WorkspaceSvg) {
   page.moveBy(24, 24);
 }
 
-function registerBlocks() {
+function registerBlocks(photosRef: React.RefObject<UploadedPhoto[]>) {
   if (BLOCKDEFS.length > 0 && Blockly.Blocks[BLOCKDEFS[0].type]) {
     return;
   }
+
+  Blockly.Extensions.register("dynamic_image_option_extension", function () {
+    const field = this.getField("PICTURE");
+    if (!field || !(field instanceof Blockly.FieldDropdown)) {
+      throw new Error("PICTURE field not found or not a dropdown");
+    }
+    field.setOptions(photosRef.current.map((photo) => [photo.name, photo.url]));
+  });
+
   Blockly.common.defineBlocksWithJsonArray(BLOCKDEFS);
 }
 
@@ -34,10 +43,15 @@ export function BlocklyWorkspace({
 }: BlocklyWorkspaceProps) {
   const blocklyContainerRef = useRef<HTMLDivElement | null>(null);
   const workspaceRef = useRef<Blockly.WorkspaceSvg | null>(null);
+  const photosRef = useRef<UploadedPhoto[]>(photos);
 
   useEffect(() => {
-    registerBlocks();
+    registerBlocks(photosRef);
   }, []);
+
+  useEffect(() => {
+    photosRef.current = photos;
+  }, [photos]);
 
   useEffect(() => {
     const container = blocklyContainerRef.current;
