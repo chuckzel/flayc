@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import * as Blockly from "blockly/core";
-import { buildDocumentTree, setAvailablePhotoOptions } from "../print-utils";
+import { buildDocumentTree } from "../print-utils";
 import type { DocumentTree, UploadedPhoto } from "../print-types";
 import TOOLBOX from "../blockly-toolbox.json";
 import BLOCKDEFS from "../blockly-definitions.json";
@@ -12,48 +12,11 @@ type BlocklyWorkspaceProps = {
   setReady: (ready: boolean) => void;
 };
 
-function connectStatement(
-  parent: Blockly.Block,
-  inputName: string,
-  child: Blockly.Block,
-) {
-  const input = parent.getInput(inputName);
-  const connection = input?.connection;
-
-  if (!connection || !child.previousConnection) {
-    return;
-  }
-
-  connection.connect(child.previousConnection);
-}
-
-function createStarterWorkspace(
-  workspace: Blockly.WorkspaceSvg,
-  photos: UploadedPhoto[],
-) {
+function createStarterWorkspace(workspace: Blockly.WorkspaceSvg) {
   const page = workspace.newBlock("page");
   page.initSvg();
   page.render();
   page.moveBy(24, 24);
-}
-
-function syncPictureOptions(
-  workspace: Blockly.WorkspaceSvg,
-  photos: UploadedPhoto[],
-) {
-  setAvailablePhotoOptions(photos);
-  const validIds = new Set(["__current__", ...photos.map((photo) => photo.id)]);
-  const fallbackPhotoId = photos[0]?.id ?? "__current__";
-
-  workspace
-    .getAllBlocks(false)
-    .filter((block) => block.type === "print_picture")
-    .forEach((block) => {
-      const currentValue = block.getFieldValue("PHOTO_ID");
-      if (!validIds.has(currentValue)) {
-        block.setFieldValue(fallbackPhotoId, "PHOTO_ID");
-      }
-    });
 }
 
 function registerBlocks() {
@@ -103,7 +66,6 @@ export function BlocklyWorkspace({
     });
 
     workspaceRef.current = workspace;
-    syncPictureOptions(workspace, photos);
 
     const handleWorkspaceChange = () => {
       const documentTree = buildDocumentTree(workspace, photos);
@@ -112,15 +74,7 @@ export function BlocklyWorkspace({
     };
 
     workspace.addChangeListener(handleWorkspaceChange);
-
-    if (
-      workspace
-        .getTopBlocks(false)
-        .every((block) => block.type !== "print_page")
-    ) {
-      createStarterWorkspace(workspace, photos);
-    }
-
+    createStarterWorkspace(workspace);
     handleWorkspaceChange();
 
     return () => {
@@ -138,7 +92,6 @@ export function BlocklyWorkspace({
       return;
     }
 
-    syncPictureOptions(workspace, photos);
     const documentTree = buildDocumentTree(workspace, photos);
     onChange(documentTree, Blockly.serialization.workspaces.save(workspace));
   }, [onChange, photos]);
