@@ -67,4 +67,10 @@
       background: #ffffff !important;
     }
   }
+
+  /* Fix conflict between blockly and tailwind
+  https://github.com/RaspberryPiFoundation/blockly/issues/5840 */
+  svg[display="none"] {
+    display: none;
+  }
 }
