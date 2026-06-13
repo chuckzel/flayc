@@ -1,15 +1,17 @@
-import type { DocumentTree, UploadedPhoto } from "../print-types";
+import type { UploadedPhoto } from "../print-types";
 import { PrintableSheet } from "./PrintableSheet";
 
 type PrintPreviewProps = {
-  document: DocumentTree | null;
+  workspaceState: unknown;
   photos: UploadedPhoto[];
   onPrint: () => void;
 };
 
-export function PrintPreview({ document, photos, onPrint }: PrintPreviewProps) {
-  const paperLabel = document?.settings.paperSize ?? "A4";
-
+export function PrintPreview({
+  workspaceState,
+  photos,
+  onPrint,
+}: PrintPreviewProps) {
   return (
     <section className="overflow-hidden rounded-3xl border border-white/10 bg-slate-950/70 shadow-2xl shadow-black/20 backdrop-blur-lg print:break-before-page print:rounded-none print:border-0 print:bg-white print:shadow-none">
       <div className="no-print flex items-center justify-between gap-4 border-b border-white/10 px-4 py-3">
@@ -21,7 +23,7 @@ export function PrintPreview({ document, photos, onPrint }: PrintPreviewProps) {
         </div>
         <div className="flex items-center gap-3">
           <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">
-            {paperLabel}
+            a4
           </span>
           <button
             type="button"
@@ -34,7 +36,7 @@ export function PrintPreview({ document, photos, onPrint }: PrintPreviewProps) {
       </div>
 
       <div className="bg-slate-200/50 p-4 print:bg-white print:p-0">
-        <PrintableSheet document={document} photos={photos} />
+        <PrintableSheet workspaceState={workspaceState} photos={photos} />
       </div>
     </section>
   );
