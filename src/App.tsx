@@ -4,12 +4,7 @@ import { PhotoManager } from "./components/PhotoManager";
 import { PrintPreview } from "./components/PrintPreview";
 import { StudioHeader } from "./components/StudioHeader";
 import { WorkspaceYamlPanel } from "./components/WorkspaceYamlPanel";
-import {
-  DEFAULT_LAYOUT,
-  PALETTE,
-  type DocumentTree,
-  type UploadedPhoto,
-} from "./print-types";
+import { DEFAULT_LAYOUT, PALETTE, type UploadedPhoto } from "./print-types";
 import {
   buildSnapshot,
   createStarterPhotos,
@@ -21,9 +16,7 @@ function App() {
   const [photos, setPhotos] = useState<UploadedPhoto[]>(() =>
     createStarterPhotos(),
   );
-  const [documentTree, setDocumentTree] = useState<DocumentTree | null>(null);
   const [workspaceState, setWorkspaceState] = useState<unknown>(null);
-  const [blocklyReady, setBlocklyReady] = useState(false);
 
   const photosRef = useRef(photos);
 
@@ -56,13 +49,9 @@ function App() {
     });
   }, []);
 
-  const handleWorkspaceChange = useCallback(
-    (nextDocumentTree: DocumentTree, nextWorkspaceState: unknown) => {
-      setDocumentTree(nextDocumentTree);
-      setWorkspaceState(nextWorkspaceState);
-    },
-    [],
-  );
+  const handleWorkspaceChange = useCallback((nextWorkspaceState: unknown) => {
+    setWorkspaceState(nextWorkspaceState);
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -77,7 +66,7 @@ function App() {
   const snapshot = useMemo(
     () =>
       buildSnapshot(
-        documentTree ?? {
+        {
           type: "page",
           settings: DEFAULT_LAYOUT,
           children: [],
@@ -85,7 +74,7 @@ function App() {
         photos,
         workspaceState,
       ),
-    [documentTree, photos, workspaceState],
+    [photos, workspaceState],
   );
 
   const workspaceYaml = useMemo(() => toYaml(snapshot), [snapshot]);
@@ -106,15 +95,10 @@ function App() {
             palette={PALETTE}
           />
 
-          <BlocklyWorkspace
-            photos={photos}
-            onChange={handleWorkspaceChange}
-            ready={blocklyReady}
-            setReady={setBlocklyReady}
-          />
+          <BlocklyWorkspace photos={photos} onChange={handleWorkspaceChange} />
 
           <PrintPreview
-            document={documentTree}
+            document={null}
             photos={photos}
             onPrint={() => window.print()}
           />

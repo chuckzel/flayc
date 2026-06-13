@@ -1,15 +1,12 @@
 import { useEffect, useRef } from "react";
 import * as Blockly from "blockly/core";
-import { buildDocumentTree } from "../print-utils";
-import type { DocumentTree, UploadedPhoto } from "../print-types";
+import type { UploadedPhoto } from "../print-types";
 import TOOLBOX from "../blockly-toolbox.json";
 import BLOCKDEFS from "../blockly-definitions.json";
 
 type BlocklyWorkspaceProps = {
   photos: UploadedPhoto[];
-  onChange: (documentTree: DocumentTree, workspaceState: unknown) => void;
-  ready: boolean;
-  setReady: (ready: boolean) => void;
+  onChange: (workspaceState: unknown) => void;
 };
 
 function createStarterWorkspace(workspace: Blockly.WorkspaceSvg) {
@@ -63,12 +60,7 @@ function createWorkspace(container: HTMLDivElement) {
   return workspace;
 }
 
-export function BlocklyWorkspace({
-  photos,
-  onChange,
-  ready,
-  setReady,
-}: BlocklyWorkspaceProps) {
+export function BlocklyWorkspace({ photos, onChange }: BlocklyWorkspaceProps) {
   const blocklyContainerRef = useRef<HTMLDivElement | null>(null);
   const workspaceRef = useRef<Blockly.WorkspaceSvg | null>(null);
   const photosRef = useRef<UploadedPhoto[]>(photos);
@@ -101,29 +93,15 @@ export function BlocklyWorkspace({
       return;
     }
     const handleWorkspaceChange = () => {
-      const documentTree = buildDocumentTree(workspace, photos);
-      onChange(documentTree, Blockly.serialization.workspaces.save(workspace));
-      setReady(true);
+      onChange(Blockly.serialization.workspaces.save(workspace));
     };
 
     workspace.addChangeListener(handleWorkspaceChange);
 
     return () => {
       workspace.removeChangeListener(handleWorkspaceChange);
-      setReady(false);
     };
-  }, [onChange, photos, setReady]);
-
-  useEffect(() => {
-    const workspace = workspaceRef.current;
-
-    if (!workspace) {
-      return;
-    }
-
-    const documentTree = buildDocumentTree(workspace, photos);
-    onChange(documentTree, Blockly.serialization.workspaces.save(workspace));
-  }, [onChange, photos]);
+  }, [onChange]);
 
   return (
     <section className="no-print overflow-hidden rounded-3xl border border-white/10 bg-slate-950/70 shadow-2xl shadow-black/20 backdrop-blur-lg">
@@ -138,7 +116,7 @@ export function BlocklyWorkspace({
           </p>
         </div>
         <div className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs font-medium text-cyan-200">
-          {ready ? "Ready" : "Loading"}
+          "Ready"
         </div>
       </div>
       <div ref={blocklyContainerRef} className="h-[760px] w-full" />
