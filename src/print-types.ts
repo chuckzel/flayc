@@ -108,3 +108,94 @@ export const PALETTE = [
   "from-amber-400/20 to-rose-400/20",
   "from-fuchsia-400/20 to-violet-400/20",
 ];
+
+export interface WorkspaceState {
+  blocks: {
+    blocks: AnyBlockType[];
+  };
+}
+
+interface BlockInput<T> {
+  block: T;
+}
+
+type AnyBlockType =
+  | PageBlock
+  | StyleBlockType
+  | ElementBlockType
+  | ImageBlockType;
+
+type StyleBlockType = BorderBlock | PaddingBlock | CustomStyleBlock;
+
+type ElementBlockType = ContainerBlock | ImageElementBlock;
+
+type ImageBlockType = UploadedImageBlock;
+
+interface BlockBase {
+  type: string;
+  id: string;
+  x: number;
+  y: number;
+}
+
+interface PageBlock extends BlockBase {
+  type: "page";
+  fields: {
+    WIDTH: number;
+    HEIGHT: number;
+  };
+  inputs?: {
+    CHILDREN?: BlockInput<ElementBlockType>;
+  };
+}
+
+interface StyleBlockBase extends BlockBase {
+  next?: BlockInput<StyleBlockType>;
+}
+
+interface BorderBlock extends StyleBlockBase {
+  type: "style_border";
+  fields: {
+    WIDTH: number;
+    COLOR: string;
+  };
+}
+
+interface PaddingBlock extends StyleBlockBase {
+  type: "style_padding";
+  fields: unknown;
+}
+
+interface CustomStyleBlock extends StyleBlockBase {
+  type: "style_custom";
+  fields: {
+    PROPERTY: string;
+    VALUE: string;
+  };
+}
+
+interface ElementBlockBase extends BlockBase {
+  next?: BlockInput<ElementBlockType>;
+}
+
+interface ContainerBlock extends ElementBlockBase {
+  type: "element_container";
+  inputs?: {
+    STYLES?: BlockInput<StyleBlockType>;
+    CHILDREN?: BlockInput<ElementBlockType>;
+  };
+}
+
+interface ImageElementBlock extends ElementBlockBase {
+  type: "element_image";
+  inputs?: {
+    IMAGE: BlockInput<ImageBlockType>;
+  };
+}
+
+interface UploadedImageBlock extends BlockBase {
+  type: "image_uploaded";
+  fields: {
+    IMAGE_URL: string;
+  };
+}

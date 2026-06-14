@@ -3,14 +3,20 @@ import { BlocklyWorkspace } from "./components/BlocklyWorkspace";
 import { PhotoManager } from "./components/PhotoManager";
 import { PrintPreview } from "./components/PrintPreview";
 import { StudioHeader } from "./components/StudioHeader";
-import { PALETTE, type UploadedPhoto } from "./print-types";
+import {
+  PALETTE,
+  type UploadedPhoto,
+  type WorkspaceState,
+} from "./print-types";
 import { createStarterPhotos, formatBytes } from "./print-utils";
 
 function App() {
   const [photos, setPhotos] = useState<UploadedPhoto[]>(() =>
     createStarterPhotos(),
   );
-  const [workspaceState, setWorkspaceState] = useState<unknown>(null);
+  const [workspaceState, setWorkspaceState] = useState<WorkspaceState | null>(
+    null,
+  );
 
   const photosRef = useRef(photos);
 
@@ -43,9 +49,12 @@ function App() {
     });
   }, []);
 
-  const handleWorkspaceChange = useCallback((nextWorkspaceState: unknown) => {
-    setWorkspaceState(nextWorkspaceState);
-  }, []);
+  const handleWorkspaceChange = useCallback(
+    (nextWorkspaceState: WorkspaceState) => {
+      setWorkspaceState(nextWorkspaceState);
+    },
+    [],
+  );
 
   useEffect(() => {
     return () => {

@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
 import * as Blockly from "blockly/core";
 import { registerFieldColour } from "@blockly/field-colour";
-import type { UploadedPhoto } from "../print-types";
+import type { UploadedPhoto, WorkspaceState } from "../print-types";
 import TOOLBOX from "../blockly-toolbox.json";
 import BLOCKDEFS from "../blockly-definitions.json";
 
 type BlocklyWorkspaceProps = {
   photos: UploadedPhoto[];
-  onChange: (workspaceState: unknown) => void;
+  onChange: (workspaceState: WorkspaceState) => void;
 };
 
 function createStarterWorkspace(workspace: Blockly.WorkspaceSvg) {
@@ -95,7 +95,9 @@ export function BlocklyWorkspace({ photos, onChange }: BlocklyWorkspaceProps) {
       return;
     }
     const handleWorkspaceChange = () => {
-      onChange(Blockly.serialization.workspaces.save(workspace));
+      onChange(
+        Blockly.serialization.workspaces.save(workspace) as WorkspaceState,
+      );
     };
 
     workspace.addChangeListener(handleWorkspaceChange);
