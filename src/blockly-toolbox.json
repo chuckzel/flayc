@@ -11,15 +11,15 @@
         },
         {
           "kind": "block",
-          "type": "container"
+          "type": "element_container"
         },
         {
           "kind": "block",
-          "type": "container_img"
+          "type": "element_image"
         },
         {
           "kind": "block",
-          "type": "picture_uploaded"
+          "type": "image_uploaded"
         }
       ]
     },

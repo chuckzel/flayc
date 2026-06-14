@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import * as Blockly from "blockly/core";
+import { registerFieldColour } from "@blockly/field-colour";
 import type { UploadedPhoto } from "../print-types";
 import TOOLBOX from "../blockly-toolbox.json";
 import BLOCKDEFS from "../blockly-definitions.json";
@@ -21,10 +22,11 @@ function registerBlocks(photosRef: React.RefObject<UploadedPhoto[]>) {
     return;
   }
 
+  registerFieldColour();
   Blockly.Extensions.register("dynamic_image_option_extension", function () {
-    const field = this.getField("PICTURE");
+    const field = this.getField("IMAGE_URL");
     if (!field || !(field instanceof Blockly.FieldDropdown)) {
-      throw new Error("PICTURE field not found or not a dropdown");
+      throw new Error("IMAGE_URL field not found or not a dropdown");
     }
     field.setOptions(photosRef.current.map((photo) => [photo.name, photo.url]));
   });

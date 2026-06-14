@@ -3,42 +3,34 @@
     "type": "page",
     "tooltip": "",
     "helpUrl": "",
-    "message0": "Page of size %1 x %2 mm %3 %4",
+    "message0": "Page of size %1 x %2 mm \n %3",
     "args0": [
       {
         "type": "field_number",
-        "name": "width",
+        "name": "WIDTH",
         "value": 210,
         "min": 0.01
       },
       {
         "type": "field_number",
-        "name": "height",
+        "name": "HEIGHT",
         "value": 297,
         "min": 0.01
       },
       {
-        "type": "input_dummy",
-        "name": "size"
-      },
-      {
         "type": "input_statement",
-        "name": "children",
-        "check": ["Container", "Picture"]
+        "name": "CHILDREN",
+        "check": "Element"
       }
     ],
     "colour": 120
   },
   {
-    "type": "container",
+    "type": "element_container",
     "tooltip": "",
     "helpUrl": "",
-    "message0": "Container %1 styled %2 around %3",
+    "message0": "Container \n styled %1 around %2",
     "args0": [
-      {
-        "type": "input_end_row",
-        "name": ""
-      },
       {
         "type": "input_statement",
         "name": "STYLES",
@@ -47,46 +39,42 @@
       {
         "type": "input_statement",
         "name": "CHILDREN",
-        "check": ["Container", "Picture"]
+        "check": "Element"
       }
     ],
-    "previousStatement": ["Container", "Picture"],
-    "nextStatement": ["Container", "Picture"],
+    "previousStatement": "Element",
+    "nextStatement": "Element",
     "colour": 225
   },
   {
-    "type": "container_img",
+    "type": "element_image",
     "tooltip": "",
     "helpUrl": "",
     "message0": "Image %1",
     "args0": [
       {
         "type": "input_value",
-        "name": "NAME",
-        "check": "Picture"
+        "name": "IMAGE",
+        "check": "Image"
       }
     ],
-    "previousStatement": "Container",
-    "nextStatement": "Container",
+    "previousStatement": "Element",
+    "nextStatement": "Element",
     "colour": 225
   },
   {
-    "type": "picture_uploaded",
+    "type": "image_uploaded",
     "tooltip": "",
     "helpUrl": "",
-    "message0": "Picture %1 %2",
+    "message0": "%1",
     "args0": [
       {
         "type": "field_dropdown",
-        "name": "PICTURE",
+        "name": "IMAGE_URL",
         "options": [["placeholder replaced by extension", "PLACEHOLDER"]]
-      },
-      {
-        "type": "input_dummy",
-        "name": ""
       }
     ],
-    "output": "Picture",
+    "output": "Image",
     "colour": 15,
     "extensions": ["dynamic_image_option_extension"]
   },
@@ -94,7 +82,7 @@
     "type": "style_custom",
     "tooltip": "",
     "helpUrl": "",
-    "message0": "Custom style ' %1 : %2 ' %3",
+    "message0": "Custom style ' %1 : %2 '",
     "args0": [
       {
         "type": "field_input",
@@ -105,10 +93,6 @@
         "type": "field_input",
         "name": "VALUE",
         "text": "value"
-      },
-      {
-        "type": "input_dummy",
-        "name": ""
       }
     ],
     "previousStatement": "Style",
@@ -119,7 +103,7 @@
     "type": "style_border",
     "tooltip": "",
     "helpUrl": "",
-    "message0": "Border %1 %2 %3",
+    "message0": "Border %1 %2",
     "args0": [
       {
         "type": "field_colour",
@@ -131,10 +115,6 @@
         "name": "WIDTH",
         "value": 0,
         "min": 0
-      },
-      {
-        "type": "input_dummy",
-        "name": ""
       }
     ],
     "previousStatement": "Style",
@@ -145,16 +125,12 @@
     "type": "style_padding",
     "tooltip": "",
     "helpUrl": "",
-    "message0": "Padding %1 %2",
+    "message0": "Padding %1",
     "args0": [
       {
         "type": "field_number",
-        "name": "NAME",
+        "name": "WIDTH",
         "value": 0
-      },
-      {
-        "type": "input_dummy",
-        "name": ""
       }
     ],
     "previousStatement": "Style",
