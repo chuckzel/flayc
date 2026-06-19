@@ -28,7 +28,9 @@ function registerBlocks(photosRef: React.RefObject<UploadedPhoto[]>) {
     if (!field || !(field instanceof Blockly.FieldDropdown)) {
       throw new Error("IMAGE_URL field not found or not a dropdown");
     }
-    field.setOptions(photosRef.current.map((photo) => [photo.name, photo.url]));
+    field.setOptions(() =>
+      photosRef.current.map((photo) => [photo.name, photo.url]),
+    );
   });
 
   Blockly.common.defineBlocksWithJsonArray(BLOCKDEFS);
