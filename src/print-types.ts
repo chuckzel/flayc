@@ -119,17 +119,17 @@ interface BlockInput<T> {
   block: T;
 }
 
-type AnyBlockType =
+export type AnyBlockType =
   | PageBlock
   | StyleBlockType
   | ElementBlockType
   | ImageBlockType;
 
-type StyleBlockType = BorderBlock | PaddingBlock | CustomStyleBlock;
+export type StyleBlockType = BorderBlock | PaddingBlock | CustomStyleBlock;
 
-type ElementBlockType = ContainerBlock | ImageElementBlock;
+export type ElementBlockType = ContainerBlock | ImageElementBlock;
 
-type ImageBlockType = UploadedImageBlock;
+export type ImageBlockType = UploadedImageBlock;
 
 interface BlockBase {
   type: string;
@@ -138,7 +138,7 @@ interface BlockBase {
   y: number;
 }
 
-interface PageBlock extends BlockBase {
+export interface PageBlock extends BlockBase {
   type: "page";
   fields: {
     WIDTH: number;
@@ -153,7 +153,7 @@ interface StyleBlockBase extends BlockBase {
   next?: BlockInput<StyleBlockType>;
 }
 
-interface BorderBlock extends StyleBlockBase {
+export interface BorderBlock extends StyleBlockBase {
   type: "style_border";
   fields: {
     WIDTH: number;
@@ -161,12 +161,12 @@ interface BorderBlock extends StyleBlockBase {
   };
 }
 
-interface PaddingBlock extends StyleBlockBase {
+export interface PaddingBlock extends StyleBlockBase {
   type: "style_padding";
   fields: unknown;
 }
 
-interface CustomStyleBlock extends StyleBlockBase {
+export interface CustomStyleBlock extends StyleBlockBase {
   type: "style_custom";
   fields: {
     PROPERTY: string;
@@ -178,7 +178,7 @@ interface ElementBlockBase extends BlockBase {
   next?: BlockInput<ElementBlockType>;
 }
 
-interface ContainerBlock extends ElementBlockBase {
+export interface ContainerBlock extends ElementBlockBase {
   type: "element_container";
   inputs?: {
     STYLES?: BlockInput<StyleBlockType>;
@@ -186,14 +186,14 @@ interface ContainerBlock extends ElementBlockBase {
   };
 }
 
-interface ImageElementBlock extends ElementBlockBase {
+export interface ImageElementBlock extends ElementBlockBase {
   type: "element_image";
   inputs?: {
     IMAGE: BlockInput<ImageBlockType>;
   };
 }
 
-interface UploadedImageBlock extends BlockBase {
+export interface UploadedImageBlock extends BlockBase {
   type: "image_uploaded";
   fields: {
     IMAGE_URL: string;
