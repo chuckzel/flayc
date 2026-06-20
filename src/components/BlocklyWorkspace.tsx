@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import * as Blockly from "blockly/core";
+import * as BlocklyEnLocale from "blockly/msg/en";
 import { registerFieldColour } from "@blockly/field-colour";
 import type { UploadedPhoto, WorkspaceState } from "../print-types";
 import TOOLBOX from "../blockly-toolbox.json";
@@ -21,7 +22,7 @@ function registerBlocks(photosRef: React.RefObject<UploadedPhoto[]>) {
   if (BLOCKDEFS.length > 0 && Blockly.Blocks[BLOCKDEFS[0].type]) {
     return;
   }
-
+  Blockly.setLocale(BlocklyEnLocale as unknown as Record<string, string>);
   registerFieldColour();
   Blockly.Extensions.register("dynamic_image_option_extension", function () {
     const field = this.getField("IMAGE_URL");
