@@ -4,6 +4,7 @@ import type {
   ContainerBlock,
   ImageElementBlock,
 } from "../print-types";
+import { getStyleFromBlocks } from "../css-generator";
 
 type BlockComponentProps = {
   block: PageBlock | ElementBlockType;
@@ -43,9 +44,10 @@ function ContainerBlockComponent({ block }: { block: ContainerBlock }) {
   ) {
     childrenHtml.push(<BlockComponent key={child.id} block={child} />);
   }
-  return <div>container ({childrenHtml})</div>;
+  const style = getStyleFromBlocks(block.inputs?.STYLES?.block);
+  return <div style={style}>container ({childrenHtml})</div>;
 }
 
 function ImageBlockComponent({ block }: { block: ImageElementBlock }) {
-  return <div>image ({block.inputs?.IMAGE?.block.fields.IMAGE_URL})</div>;
+  return <img src={block.inputs?.IMAGE?.block.fields.IMAGE_URL} alt="Image" />;
 }

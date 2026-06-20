@@ -163,7 +163,9 @@ export interface BorderBlock extends StyleBlockBase {
 
 export interface PaddingBlock extends StyleBlockBase {
   type: "style_padding";
-  fields: unknown;
+  fields: {
+    WIDTH: number;
+  };
 }
 
 export interface CustomStyleBlock extends StyleBlockBase {
