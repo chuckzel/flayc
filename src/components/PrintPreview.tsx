@@ -1,17 +1,12 @@
-import type { UploadedPhoto } from "../print-types";
+import type { WorkspaceState } from "../print-types";
 import { PrintableSheet } from "./PrintableSheet";
 
 type PrintPreviewProps = {
-  workspaceState: unknown;
-  photos: UploadedPhoto[];
+  workspaceState: WorkspaceState | null;
   onPrint: () => void;
 };
 
-export function PrintPreview({
-  workspaceState,
-  photos,
-  onPrint,
-}: PrintPreviewProps) {
+export function PrintPreview({ workspaceState, onPrint }: PrintPreviewProps) {
   return (
     <section className="overflow-hidden rounded-3xl border border-white/10 bg-slate-950/70 shadow-2xl shadow-black/20 backdrop-blur-lg print:break-before-page print:rounded-none print:border-0 print:bg-white print:shadow-none">
       <div className="no-print flex items-center justify-between gap-4 border-b border-white/10 px-4 py-3">
@@ -36,7 +31,7 @@ export function PrintPreview({
       </div>
 
       <div className="bg-slate-200/50 p-4 print:bg-white print:p-0">
-        <PrintableSheet workspaceState={workspaceState} photos={photos} />
+        <PrintableSheet workspaceState={workspaceState} />
       </div>
     </section>
   );
