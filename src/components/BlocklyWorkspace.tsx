@@ -6,6 +6,14 @@ import type { UploadedPhoto, WorkspaceState } from "../print-types";
 import TOOLBOX from "../blockly-toolbox.json";
 import BLOCKDEFS from "../blockly-definitions.json";
 
+setupBlockly();
+
+function setupBlockly() {
+  Blockly.setLocale(BlocklyEnLocale as unknown as Record<string, string>);
+  registerFieldColour();
+  Blockly.common.defineBlocksWithJsonArray(BLOCKDEFS);
+}
+
 type BlocklyWorkspaceProps = {
   photos: UploadedPhoto[];
   onChange: (workspaceState: WorkspaceState) => void;
@@ -18,12 +26,8 @@ function createStarterWorkspace(workspace: Blockly.WorkspaceSvg) {
   page.moveBy(24, 24);
 }
 
-function registerBlocks(photosRef: React.RefObject<UploadedPhoto[]>) {
-  if (BLOCKDEFS.length > 0 && Blockly.Blocks[BLOCKDEFS[0].type]) {
-    return;
-  }
-  Blockly.setLocale(BlocklyEnLocale as unknown as Record<string, string>);
-  registerFieldColour();
+function registerExtensions(photosRef: React.RefObject<UploadedPhoto[]>) {
+  if (Blockly.Extensions.isRegistered("dynamic_image_option_extension")) return;
   Blockly.Extensions.register("dynamic_image_option_extension", function () {
     const field = this.getField("IMAGE_URL");
     if (!field || !(field instanceof Blockly.FieldDropdown)) {
@@ -33,8 +37,7 @@ function registerBlocks(photosRef: React.RefObject<UploadedPhoto[]>) {
       photosRef.current.map((photo) => [photo.name, photo.url]),
     );
   });
-
-  Blockly.common.defineBlocksWithJsonArray(BLOCKDEFS);
+  return;
 }
 
 function createWorkspace(container: HTMLDivElement) {
@@ -71,7 +74,7 @@ export function BlocklyWorkspace({ photos, onChange }: BlocklyWorkspaceProps) {
   const photosRef = useRef<UploadedPhoto[]>(photos);
 
   useEffect(() => {
-    registerBlocks(photosRef);
+    registerExtensions(photosRef);
 
     const container = blocklyContainerRef.current;
 
