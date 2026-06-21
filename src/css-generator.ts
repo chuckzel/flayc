@@ -11,6 +11,9 @@ export function getStyleFromBlocks(
     return property in document.documentElement.style;
   }
   function applyStyleBlock(block: StyleBlockType) {
+    if (block.disabledReasons && block.disabledReasons.length > 0) {
+      return;
+    }
     switch (block.type) {
       case "style_border":
         style.border = `${block.fields.WIDTH}px solid ${block.fields.COLOR}`;

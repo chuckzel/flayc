@@ -134,6 +134,7 @@ export type ImageBlockType = UploadedImageBlock;
 interface BlockBase {
   type: string;
   id: string;
+  disabledReasons?: string[];
   x: number;
   y: number;
 }

@@ -11,6 +11,9 @@ type BlockComponentProps = {
 };
 
 export function BlockComponent({ block }: BlockComponentProps) {
+  if (block.disabledReasons && block.disabledReasons.length > 0) {
+    return null;
+  }
   switch (block.type) {
     case "page":
       return <PageBlockComponent block={block} />;
@@ -57,5 +60,9 @@ function ContainerBlockComponent({ block }: { block: ContainerBlock }) {
 }
 
 function ImageBlockComponent({ block }: { block: ImageElementBlock }) {
-  return <img src={block.inputs?.IMAGE?.block.fields.IMAGE_URL} alt="Image" />;
+  const imgBlock = block.inputs?.IMAGE?.block;
+  const src = imgBlock?.disabledReasons
+    ? undefined
+    : imgBlock?.fields.IMAGE_URL;
+  return <img src={src} alt="Image" />;
 }

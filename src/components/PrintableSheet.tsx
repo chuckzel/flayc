@@ -1,4 +1,4 @@
-import type { WorkspaceState } from "../print-types";
+import type { PageBlock, WorkspaceState } from "../print-types";
 import { BlockComponent } from "./BlockComponent";
 
 type PrintableSheetProps = {
@@ -7,7 +7,8 @@ type PrintableSheetProps = {
 
 export function PrintableSheet({ workspaceState }: PrintableSheetProps) {
   const pageBlock = workspaceState?.blocks?.blocks.find(
-    (block) => block.type === "page",
+    (block): block is PageBlock =>
+      block.type === "page" && !block.disabledReasons,
   );
   if (!pageBlock) {
     return <EmptyTreePlaceholder />;
