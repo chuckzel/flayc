@@ -100,7 +100,10 @@ export function BlocklyWorkspace({ photos, onChange }: BlocklyWorkspaceProps) {
     if (!workspace) {
       return;
     }
-    const handleWorkspaceChange = () => {
+    const handleWorkspaceChange = (e: Blockly.Events.Abstract) => {
+      if (e.isUiEvent || workspace.isDragging()) {
+        return;
+      }
       onChange(
         Blockly.serialization.workspaces.save(workspace) as WorkspaceState,
       );
