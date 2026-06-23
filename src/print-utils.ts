@@ -447,68 +447,7 @@ export function formatBytes(bytes: number) {
   return `${(kilobytes / 1024).toFixed(1)} MB`;
 }
 
-export function toYaml(value: unknown, depth = 0): string {
-  const indent = "  ".repeat(depth);
 
-  if (value === null || value === undefined) {
-    return "null";
-  }
-
-  if (Array.isArray(value)) {
-    if (value.length === 0) {
-      return "[]";
-    }
-
-    return value
-      .map((entry) => {
-        const rendered = toYaml(entry, depth + 1);
-        const lines = rendered.split("\n");
-
-        if (lines.length === 1) {
-          return `${indent}- ${lines[0]}`;
-        }
-
-        return `${indent}- ${lines[0]}\n${lines
-          .slice(1)
-          .map((line) => `${indent}  ${line}`)
-          .join("\n")}`;
-      })
-      .join("\n");
-  }
-
-  if (typeof value === "object") {
-    const entries = Object.entries(value as Record<string, unknown>);
-
-    if (entries.length === 0) {
-      return "{}";
-    }
-
-    return entries
-      .map(([key, entryValue]) => {
-        const rendered = toYaml(entryValue, depth + 1);
-
-        if (entryValue !== null && typeof entryValue === "object") {
-          return `${indent}${key}:\n${rendered
-            .split("\n")
-            .map((line) => `${indent}  ${line}`)
-            .join("\n")}`;
-        }
-
-        return `${indent}${key}: ${rendered}`;
-      })
-      .join("\n");
-  }
-
-  if (typeof value === "string") {
-    return /[:#\n\r\t]/.test(value) ? JSON.stringify(value) : value;
-  }
-
-  if (typeof value === "number" || typeof value === "boolean") {
-    return String(value);
-  }
-
-  return String(value);
-}
 
 export function buildSnapshot(
   document: DocumentTree,

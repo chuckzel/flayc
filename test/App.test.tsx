@@ -25,14 +25,11 @@ describe("App", () => {
     printSpy.mockRestore();
   });
 
-  test("shows the advanced YAML panel", () => {
+  test("shows the print preview panel", () => {
     render(<App />);
 
     expect(
-      screen.getAllByRole("heading", { name: /intermediate yaml/i }),
-    ).not.toHaveLength(0);
-    expect(
-      screen.getAllByText(/generated from blockly/i).length,
+      screen.getAllByRole("heading", { name: /print preview/i }).length,
     ).toBeGreaterThan(0);
   });
 });
