@@ -125,7 +125,7 @@ export type AnyBlockType =
   | ElementBlockType
   | ImageBlockType;
 
-export type StyleBlockType = BorderBlock | PaddingBlock | CustomStyleBlock;
+export type StyleBlockType = BorderBlock | PaddingBlock | CustomStyleBlock | SizeBlock;
 
 export type ElementBlockType = ContainerBlock | ImageElementBlock;
 
@@ -166,6 +166,14 @@ export interface PaddingBlock extends StyleBlockBase {
   type: "style_padding";
   fields: {
     WIDTH: number;
+  };
+}
+
+export interface SizeBlock extends StyleBlockBase {
+  type: "style_size";
+  fields: {
+    WIDTH: number;
+    HEIGHT: number;
   };
 }
 

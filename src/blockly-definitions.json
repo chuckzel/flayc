@@ -136,5 +136,28 @@
     "previousStatement": "Style",
     "nextStatement": "Style",
     "colour": 285
+  },
+  {
+    "type": "style_size",
+    "tooltip": "Set size of the container. 0 means auto.",
+    "helpUrl": "",
+    "message0": "Size width %1 mm height %2 mm",
+    "args0": [
+      {
+        "type": "field_number",
+        "name": "WIDTH",
+        "value": 0,
+        "min": 0
+      },
+      {
+        "type": "field_number",
+        "name": "HEIGHT",
+        "value": 0,
+        "min": 0
+      }
+    ],
+    "previousStatement": "Style",
+    "nextStatement": "Style",
+    "colour": 285
   }
 ]

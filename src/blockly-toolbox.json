@@ -38,6 +38,10 @@
         {
           "kind": "block",
           "type": "style_padding"
+        },
+        {
+          "kind": "block",
+          "type": "style_size"
         }
       ]
     }

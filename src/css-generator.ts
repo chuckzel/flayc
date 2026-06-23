@@ -1,5 +1,9 @@
 import type { StyleBlockType } from "./print-types";
 
+function toCamelCase(str: string): string {
+  return str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+}
+
 export function getStyleFromBlocks(
   blockRoot: StyleBlockType | undefined,
 ): React.CSSProperties {
@@ -8,25 +12,40 @@ export function getStyleFromBlocks(
   function isValidCSSProperty(
     property: string,
   ): property is keyof React.CSSProperties {
+    if (typeof document === "undefined") {
+      return true;
+    }
     return property in document.documentElement.style;
   }
+
   function applyStyleBlock(block: StyleBlockType) {
     if (block.disabledReasons && block.disabledReasons.length > 0) {
       return;
     }
     switch (block.type) {
       case "style_border":
-        style.border = `${block.fields.WIDTH}px solid ${block.fields.COLOR}`;
+        style.border = `${block.fields.WIDTH}mm solid ${block.fields.COLOR}`;
         break;
       case "style_padding":
-        style.padding = `${block.fields.WIDTH}px`;
+        style.padding = `${block.fields.WIDTH}mm`;
+        break;
+      case "style_size":
+        if (block.fields.WIDTH > 0) {
+          style.width = `${block.fields.WIDTH}mm`;
+        }
+        if (block.fields.HEIGHT > 0) {
+          style.height = `${block.fields.HEIGHT}mm`;
+        }
         break;
       case "style_custom": {
-        const property = block.fields.PROPERTY;
+        const rawProperty = block.fields.PROPERTY.trim();
         const value = block.fields.VALUE;
 
+        // Convert kebab-case (e.g. flex-direction) to camelCase (e.g. flexDirection)
+        const property = toCamelCase(rawProperty);
+
         if (!isValidCSSProperty(property)) {
-          console.warn(`Ignoring invalid CSS property: ${property}`);
+          console.warn(`Ignoring invalid CSS property: ${rawProperty} (${property})`);
           break;
         }
 
