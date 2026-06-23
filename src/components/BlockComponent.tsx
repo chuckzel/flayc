@@ -40,7 +40,7 @@ function PageBlockComponent({ block }: { block: PageBlock }) {
   } as React.CSSProperties;
   return (
     <div className="bg-white text-black" style={style}>
-      page ({childrenHtml})
+      {childrenHtml}
     </div>
   );
 }
@@ -55,7 +55,11 @@ function ContainerBlockComponent({ block }: { block: ContainerBlock }) {
     childrenHtml.push(<BlockComponent key={child.id} block={child} />);
   }
   const style = getStyleFromBlocks(block.inputs?.STYLES?.block);
-  return <div style={style}>container ({childrenHtml})</div>;
+  return (
+    <div className="justify-center align-center flex flex-1" style={style}>
+      {childrenHtml}
+    </div>
+  );
 }
 
 function ImageBlockComponent({ block }: { block: ImageElementBlock }) {
@@ -63,5 +67,5 @@ function ImageBlockComponent({ block }: { block: ImageElementBlock }) {
   const src = imgBlock?.disabledReasons
     ? undefined
     : imgBlock?.fields.IMAGE_URL;
-  return <img src={src} alt="Image" />;
+  return <img className="w-full h-full flex-1" src={src} alt="Image" />;
 }
