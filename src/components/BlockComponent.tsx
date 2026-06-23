@@ -36,11 +36,10 @@ function PageBlockComponent({ block }: { block: PageBlock }) {
     childrenHtml.push(<BlockComponent key={child.id} block={child} />);
   }
   const style = {
-    color: "black",
     aspectRatio: `${block.fields.WIDTH} / ${block.fields.HEIGHT}`,
   } as React.CSSProperties;
   return (
-    <div className="bg-white" style={style}>
+    <div className="bg-white text-black" style={style}>
       page ({childrenHtml})
     </div>
   );
