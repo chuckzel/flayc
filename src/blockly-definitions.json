@@ -159,5 +159,34 @@
     "previousStatement": "Style",
     "nextStatement": "Style",
     "colour": 285
+  },
+  {
+    "type": "style_grid",
+    "tooltip": "Lay out children in a grid. 0 means auto size.",
+    "helpUrl": "",
+    "message0": "Grid cell %1 x %2 mm gap %3 mm",
+    "args0": [
+      {
+        "type": "field_number",
+        "name": "CELL_WIDTH",
+        "value": 0,
+        "min": 0
+      },
+      {
+        "type": "field_number",
+        "name": "CELL_HEIGHT",
+        "value": 0,
+        "min": 0
+      },
+      {
+        "type": "field_number",
+        "name": "GAP",
+        "value": 0,
+        "min": 0
+      }
+    ],
+    "previousStatement": "Style",
+    "nextStatement": "Style",
+    "colour": 285
   }
 ]

@@ -125,7 +125,7 @@ export type AnyBlockType =
   | ElementBlockType
   | ImageBlockType;
 
-export type StyleBlockType = BorderBlock | PaddingBlock | CustomStyleBlock | SizeBlock;
+export type StyleBlockType = BorderBlock | PaddingBlock | CustomStyleBlock | SizeBlock | GridBlock;
 
 export type ElementBlockType = ContainerBlock | ImageElementBlock;
 
@@ -174,6 +174,15 @@ export interface SizeBlock extends StyleBlockBase {
   fields: {
     WIDTH: number;
     HEIGHT: number;
+  };
+}
+
+export interface GridBlock extends StyleBlockBase {
+  type: "style_grid";
+  fields: {
+    CELL_WIDTH: number;
+    CELL_HEIGHT: number;
+    GAP: number;
   };
 }
 

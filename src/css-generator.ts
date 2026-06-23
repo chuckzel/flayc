@@ -37,6 +37,18 @@ export function getStyleFromBlocks(
           style.height = `${block.fields.HEIGHT}mm`;
         }
         break;
+      case "style_grid":
+        style.display = "grid";
+        style.gridTemplateColumns = block.fields.CELL_WIDTH > 0
+          ? `repeat(auto-fill, ${block.fields.CELL_WIDTH}mm)`
+          : `repeat(auto-fill, minmax(0, 1fr))`;
+        style.gridAutoRows = block.fields.CELL_HEIGHT > 0
+          ? `${block.fields.CELL_HEIGHT}mm`
+          : "auto";
+        if (block.fields.GAP > 0) {
+          style.gap = `${block.fields.GAP}mm`;
+        }
+        break;
       case "style_custom": {
         const rawProperty = block.fields.PROPERTY.trim();
         const value = block.fields.VALUE;
