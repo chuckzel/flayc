@@ -1,4 +1,4 @@
-import type { StyleBlockType } from "./print-types";
+import type { StyleBlockType } from "../print-types";
 
 function toCamelCase(str: string): string {
   return str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
@@ -39,12 +39,14 @@ export function getStyleFromBlocks(
         break;
       case "style_grid":
         style.display = "grid";
-        style.gridTemplateColumns = block.fields.CELL_WIDTH > 0
-          ? `repeat(auto-fill, ${block.fields.CELL_WIDTH}mm)`
-          : `repeat(auto-fill, minmax(0, 1fr))`;
-        style.gridAutoRows = block.fields.CELL_HEIGHT > 0
-          ? `${block.fields.CELL_HEIGHT}mm`
-          : "auto";
+        style.gridTemplateColumns =
+          block.fields.CELL_WIDTH > 0
+            ? `repeat(auto-fill, ${block.fields.CELL_WIDTH}mm)`
+            : `repeat(auto-fill, minmax(0, 1fr))`;
+        style.gridAutoRows =
+          block.fields.CELL_HEIGHT > 0
+            ? `${block.fields.CELL_HEIGHT}mm`
+            : "auto";
         if (block.fields.GAP > 0) {
           style.gap = `${block.fields.GAP}mm`;
         }
@@ -57,7 +59,9 @@ export function getStyleFromBlocks(
         const property = toCamelCase(rawProperty);
 
         if (!isValidCSSProperty(property)) {
-          console.warn(`Ignoring invalid CSS property: ${rawProperty} (${property})`);
+          console.warn(
+            `Ignoring invalid CSS property: ${rawProperty} (${property})`,
+          );
           break;
         }
 

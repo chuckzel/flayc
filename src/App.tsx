@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { BlocklyWorkspace } from "./components/BlocklyWorkspace";
-import { PhotoManager } from "./components/PhotoManager";
-import { PrintPreview } from "./components/PrintPreview";
-import { StudioHeader } from "./components/StudioHeader";
+import { BlocklyWorkspace } from "./editor/BlocklyWorkspace";
+import { PhotoManager } from "./asset-manager/PhotoManager";
+import { PrintPreview } from "./document-renderer/PrintPreview";
+import { StudioHeader } from "./header/StudioHeader";
 import {
   PALETTE,
   type UploadedPhoto,

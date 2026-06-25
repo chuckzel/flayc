@@ -4,7 +4,7 @@ import type {
   ContainerBlock,
   ImageElementBlock,
 } from "../print-types";
-import { getStyleFromBlocks } from "../css-generator";
+import { getStyleFromBlocks } from "./css-generator";
 
 type BlockComponentProps = {
   block: PageBlock | ElementBlockType;

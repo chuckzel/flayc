@@ -3,8 +3,8 @@ import * as Blockly from "blockly/core";
 import * as BlocklyEnLocale from "blockly/msg/en";
 import { registerFieldColour } from "@blockly/field-colour";
 import type { UploadedPhoto, WorkspaceState } from "../print-types";
-import TOOLBOX from "../blockly-toolbox.json";
-import BLOCKDEFS from "../blockly-definitions.json";
+import TOOLBOX from "./blockly-toolbox.json";
+import BLOCKDEFS from "./blockly-definitions.json";
 
 setupBlockly();
 

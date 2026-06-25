@@ -1,6 +1,6 @@
 import type { UploadedPhoto } from "../print-types";
 import { PhotoGallery } from "./PhotoGallery";
-import { PhotoUploadPanel } from "./PhotoUploadPanel";
+import { PhotoUploadPanel } from "../document-renderer/PhotoUploadPanel";
 
 type PhotoManagerProps = {
   photos: UploadedPhoto[];
