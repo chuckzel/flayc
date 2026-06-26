@@ -86,6 +86,7 @@ function App() {
 
           <PrintPreview
             workspaceState={workspaceState}
+            assets={photos}
             onPrint={() => window.print()}
           />
         </div>

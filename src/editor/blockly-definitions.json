@@ -70,7 +70,7 @@
     "args0": [
       {
         "type": "field_dropdown",
-        "name": "IMAGE_URL",
+        "name": "IMAGE",
         "options": [["placeholder replaced by extension", "PLACEHOLDER"]]
       }
     ],

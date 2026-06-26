@@ -1,11 +1,16 @@
-import type { PageBlock, WorkspaceState } from "../print-types";
+import type { PageBlock, UploadedPhoto, WorkspaceState } from "../print-types";
 import { BlockComponent } from "./BlockComponent";
+import { DocumentContext } from "./contexts";
 
 type PrintableSheetProps = {
   workspaceState: WorkspaceState | null;
+  assets: UploadedPhoto[];
 };
 
-export function PrintableSheet({ workspaceState }: PrintableSheetProps) {
+export function PrintableSheet({
+  workspaceState,
+  assets,
+}: PrintableSheetProps) {
   const pageBlock = workspaceState?.blocks?.blocks.find(
     (block): block is PageBlock =>
       block.type === "page" && !block.disabledReasons,
@@ -13,7 +18,11 @@ export function PrintableSheet({ workspaceState }: PrintableSheetProps) {
   if (!pageBlock) {
     return <EmptyTreePlaceholder />;
   }
-  return <BlockComponent block={pageBlock} />;
+  return (
+    <DocumentContext value={{ assets }}>
+      <BlockComponent block={pageBlock} />
+    </DocumentContext>
+  );
 }
 
 function EmptyTreePlaceholder() {

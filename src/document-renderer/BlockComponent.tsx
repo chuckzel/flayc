@@ -1,9 +1,11 @@
+import { useContext } from "react";
 import type {
   PageBlock,
   ElementBlockType,
   ContainerBlock,
   ImageElementBlock,
 } from "../print-types";
+import { DocumentContext } from "./contexts";
 import { getStyleFromBlocks } from "./css-generator";
 
 type BlockComponentProps = {
@@ -63,9 +65,11 @@ function ContainerBlockComponent({ block }: { block: ContainerBlock }) {
 }
 
 function ImageBlockComponent({ block }: { block: ImageElementBlock }) {
+  const docContext = useContext(DocumentContext);
   const imgBlock = block.inputs?.IMAGE?.block;
-  const src = imgBlock?.disabledReasons
-    ? undefined
-    : imgBlock?.fields.IMAGE_URL;
-  return <img className="w-full h-full flex-1" src={src} alt="Image" />;
+  const image = imgBlock?.disabledReasons ? undefined : imgBlock?.fields.IMAGE;
+  const src = docContext.assets.find((asset) => asset.name === image)?.url;
+  return (
+    <img className="w-full h-full flex-1" src={src} alt={`Image ${image}`} />
+  );
 }

@@ -29,12 +29,12 @@ function createStarterWorkspace(workspace: Blockly.WorkspaceSvg) {
 function registerExtensions(photosRef: React.RefObject<UploadedPhoto[]>) {
   if (Blockly.Extensions.isRegistered("dynamic_image_option_extension")) return;
   Blockly.Extensions.register("dynamic_image_option_extension", function () {
-    const field = this.getField("IMAGE_URL");
+    const field = this.getField("IMAGE");
     if (!field || !(field instanceof Blockly.FieldDropdown)) {
       throw new Error("IMAGE_URL field not found or not a dropdown");
     }
     field.setOptions(() =>
-      photosRef.current.map((photo) => [photo.name, photo.url]),
+      photosRef.current.map((photo) => [photo.name, photo.name]),
     );
   });
   return;

@@ -125,6 +125,6 @@ export interface ImageElementBlock extends ElementBlockBase {
 export interface UploadedImageBlock extends BlockBase {
   type: "image_uploaded";
   fields: {
-    IMAGE_URL: string;
+    IMAGE: string;
   };
 }
