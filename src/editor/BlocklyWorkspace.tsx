@@ -16,28 +16,26 @@ function setupBlockly() {
 
 type BlocklyWorkspaceProps = {
   photos: UploadedPhoto[];
+  state: {
+    state: WorkspaceState | null;
+    source: "load" | "user";
+  };
   onChange: (workspaceState: WorkspaceState) => void;
 };
-
-function createStarterWorkspace(workspace: Blockly.WorkspaceSvg) {
-  const page = workspace.newBlock("page");
-  page.initSvg();
-  page.render();
-  page.moveBy(24, 24);
-}
 
 function registerExtensions(photosRef: React.RefObject<UploadedPhoto[]>) {
   if (Blockly.Extensions.isRegistered("dynamic_image_option_extension")) return;
   Blockly.Extensions.register("dynamic_image_option_extension", function () {
     const field = this.getField("IMAGE");
     if (!field || !(field instanceof Blockly.FieldDropdown)) {
-      throw new Error("IMAGE_URL field not found or not a dropdown");
+      throw new Error("IMAGE field not found or not a dropdown");
     }
     field.setOptions(() =>
-      photosRef.current.map((photo) => [photo.name, photo.name]),
+      photosRef.current
+        .map((photo) => [photo.name, photo.id] as [string, string])
+        .concat([["None", "undefined"]]),
     );
   });
-  return;
 }
 
 function createWorkspace(container: HTMLDivElement) {
@@ -68,7 +66,11 @@ function createWorkspace(container: HTMLDivElement) {
   return workspace;
 }
 
-export function BlocklyWorkspace({ photos, onChange }: BlocklyWorkspaceProps) {
+export function BlocklyWorkspace({
+  photos,
+  state,
+  onChange,
+}: BlocklyWorkspaceProps) {
   const blocklyContainerRef = useRef<HTMLDivElement | null>(null);
   const workspaceRef = useRef<Blockly.WorkspaceSvg | null>(null);
   const photosRef = useRef<UploadedPhoto[]>(photos);
@@ -83,13 +85,20 @@ export function BlocklyWorkspace({ photos, onChange }: BlocklyWorkspaceProps) {
     }
     const workspace = createWorkspace(container);
     workspaceRef.current = workspace;
-    createStarterWorkspace(workspace);
 
     return () => {
       workspace.dispose();
       workspaceRef.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    const workspace = workspaceRef.current;
+    if (!workspace || !state || state.source !== "load" || !state.state) {
+      return;
+    }
+    Blockly.serialization.workspaces.load(state.state, workspace);
+  }, [state]);
 
   useEffect(() => {
     photosRef.current = photos;

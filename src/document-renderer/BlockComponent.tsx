@@ -68,7 +68,7 @@ function ImageBlockComponent({ block }: { block: ImageElementBlock }) {
   const docContext = useContext(DocumentContext);
   const imgBlock = block.inputs?.IMAGE?.block;
   const image = imgBlock?.disabledReasons ? undefined : imgBlock?.fields.IMAGE;
-  const src = docContext.assets.find((asset) => asset.name === image)?.url;
+  const src = docContext.assets.find((asset) => asset.id === image)?.url;
   return (
     <img className="w-full h-full flex-1" src={src} alt={`Image ${image}`} />
   );

@@ -9,29 +9,55 @@ import {
   type WorkspaceState,
 } from "./print-types";
 import { createStarterPhotos, formatBytes } from "./print-utils";
+import { Db } from "./persistence/indexed-db";
 
 function App() {
   const [photos, setPhotos] = useState<UploadedPhoto[]>(() =>
     createStarterPhotos(),
   );
-  const [workspaceState, setWorkspaceState] = useState<WorkspaceState | null>(
-    null,
-  );
+  const [workspaceState, setWorkspaceState] = useState<{
+    state: WorkspaceState | null;
+    source: "load" | "user";
+  }>({ state: null, source: "load" });
 
   const photosRef = useRef(photos);
+
+  useEffect(() => {
+    const load = async () => {
+      const storedPhotos = await Db.getAllImages();
+      const loadedPhotos: UploadedPhoto[] = storedPhotos.map(([key, file]) => ({
+        id: key,
+        name: file.name,
+        sizeLabel: formatBytes(file.size),
+        url: URL.createObjectURL(file),
+        isObjectUrl: true,
+      }));
+      setPhotos(loadedPhotos);
+
+      const storedWorkspaceState = await Db.getWorkspaceState();
+      if (storedWorkspaceState) {
+        setWorkspaceState({ state: storedWorkspaceState, source: "load" });
+      }
+    };
+    load();
+  }, []);
 
   useEffect(() => {
     photosRef.current = photos;
   }, [photos]);
 
   const handleUpload = useCallback((files: File[]) => {
-    const newPhotos = files.map((file) => ({
-      id: `${file.name}-${file.size}-${crypto.randomUUID()}`,
-      name: file.name,
-      sizeLabel: formatBytes(file.size),
-      url: URL.createObjectURL(file),
-      isObjectUrl: true,
-    }));
+    const newPhotos = files.map((file) => {
+      const id = `${file.name}-${file.size}-${crypto.randomUUID()}`;
+      Db.putImage(id, file);
+      return {
+        id,
+        name: file.name,
+        sizeLabel: formatBytes(file.size),
+        url: URL.createObjectURL(file),
+        isObjectUrl: true,
+      };
+    });
 
     setPhotos((currentPhotos) => [...currentPhotos, ...newPhotos]);
   }, []);
@@ -41,6 +67,9 @@ function App() {
       const nextPhotos = currentPhotos.filter((photo) => photo.id !== photoId);
       const removedPhoto = currentPhotos.find((photo) => photo.id === photoId);
 
+      if (removedPhoto) {
+        Db.deleteImage(removedPhoto.id);
+      }
       if (removedPhoto?.isObjectUrl) {
         URL.revokeObjectURL(removedPhoto.url);
       }
@@ -51,7 +80,8 @@ function App() {
 
   const handleWorkspaceChange = useCallback(
     (nextWorkspaceState: WorkspaceState) => {
-      setWorkspaceState(nextWorkspaceState);
+      setWorkspaceState({ state: nextWorkspaceState, source: "user" });
+      Db.putWorkspaceState(nextWorkspaceState);
     },
     [],
   );
@@ -82,10 +112,14 @@ function App() {
             palette={PALETTE}
           />
 
-          <BlocklyWorkspace photos={photos} onChange={handleWorkspaceChange} />
+          <BlocklyWorkspace
+            photos={photos}
+            state={workspaceState}
+            onChange={handleWorkspaceChange}
+          />
 
           <PrintPreview
-            workspaceState={workspaceState}
+            workspaceState={workspaceState.state}
             assets={photos}
             onPrint={() => window.print()}
           />
