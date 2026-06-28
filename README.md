@@ -1,73 +1,43 @@
-# React + TypeScript + Vite
+# flayc
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Live on GitHub Pages: https://chuckzel.github.io/flayc/main/**
 
-Currently, two official plugins are available:
+A visual layout builder for arranging uploaded images on printable pages directly in the browser.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Photo Print Layout Studio lets users upload photos, define page structure visually, and create print-ready layouts without needing external design software. Layout logic is built using a block-based editor, while the result is rendered instantly in a printable preview.
 
-## React Compiler
+## Usage
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. **Upload images**
 
-## Expanding the ESLint configuration
+   Add photos using the picture manager panel. Uploaded files become available as layout elements.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+2. **Build your layout**
 
-```js
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
+   Use the visual block editor to create the page structure:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+   - Page block is the root component and defines the page size and lays out inside items vertically
+   - Containers define sections and, by default, lay out items horizontally
+   - Styling blocks control appearance and layout behavior
+   - Image blocks place photos
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+3. **Preview**
+
+   The print preview updates to show how the page will look when printed.
+
+4. **Print**
+
+   When the layout is ready, print directly from the browser.
+
+## Development
+
+The app is built with TypeScript, React, Vite and the block interface uses Blockly.
+
+### Build from source
+
 ```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
-
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+git clone https://github.com/chuckzel/flayc.git
+npm run dev  # run in watch mode
+npm run build  # typecheck and build into ./dist
+npm run test:run  # run tests with vitest
 ```
