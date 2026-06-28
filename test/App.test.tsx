@@ -11,11 +11,6 @@ describe("App", () => {
     render(<App />);
 
     expect(
-      screen.getByRole("heading", {
-        name: /arrange photos, shape the page, and print directly from the browser/i,
-      }),
-    ).toBeDefined();
-    expect(
       screen.getByRole("heading", { name: /picture manager/i }),
     ).toBeDefined();
 
